@@ -1,4 +1,4 @@
-﻿namespace Allegory.Standard.Filter.Tests.Models;
+﻿namespace Allegory.Axiom.Filter.Tests.Models;
 
 public class Sample
 {

@@ -1,4 +1,4 @@
-﻿namespace Allegory.Standard.Filter.Enums;
+﻿namespace Allegory.Axiom.Filter.Enums;
 
 public enum OperatorCombine
 {

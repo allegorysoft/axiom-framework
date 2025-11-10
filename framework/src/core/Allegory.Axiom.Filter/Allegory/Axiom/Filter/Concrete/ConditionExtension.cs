@@ -5,10 +5,10 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
-using Allegory.Standard.Filter.Enums;
-using Allegory.Standard.Filter.Properties;
+using Allegory.Axiom.Filter.Enums;
+using Allegory.Axiom.Filter.Properties;
 
-namespace Allegory.Standard.Filter.Concrete;
+namespace Allegory.Axiom.Filter.Concrete;
 
 public static partial class ConditionExtension
 {
@@ -19,7 +19,7 @@ public static partial class ConditionExtension
         if (condition.IsColumn)
         {
             if (string.IsNullOrEmpty(condition.ParameterName)) return null;
-            if (condition.Operator == Enums.Operator.IsBetween && condition.Value is ICollection)
+            if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.IsBetween && condition.Value is ICollection)
             {
                 var array = ((ICollection) condition.Value).OfType<object>();
                 return new Dictionary<string, object>

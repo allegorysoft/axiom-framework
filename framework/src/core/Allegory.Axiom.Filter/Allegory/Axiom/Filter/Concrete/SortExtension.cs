@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Allegory.Standard.Filter.Enums;
-using Allegory.Standard.Filter.Properties;
+using Allegory.Axiom.Filter.Enums;
+using Allegory.Axiom.Filter.Properties;
 
-namespace Allegory.Standard.Filter.Concrete;
+namespace Allegory.Axiom.Filter.Concrete;
 
 public static class SortExtension
 {

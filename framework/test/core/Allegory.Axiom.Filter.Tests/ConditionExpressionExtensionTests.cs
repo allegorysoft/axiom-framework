@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Allegory.Standard.Filter.Concrete;
-using Allegory.Standard.Filter.Enums;
-using Allegory.Standard.Filter.Tests.Models;
+using Allegory.Axiom.Filter.Concrete;
+using Allegory.Axiom.Filter.Enums;
+using Allegory.Axiom.Filter.Tests.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Allegory.Standard.Filter.Tests;
+namespace Allegory.Axiom.Filter.Tests;
 
 [TestClass]
 public class ConditionExpressionExtensionTests

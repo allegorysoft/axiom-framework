@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Allegory.Standard.Filter.Concrete;
+namespace Allegory.Axiom.Filter.Concrete;
 
 public class FilterException : Exception
 {

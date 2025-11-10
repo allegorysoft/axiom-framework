@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Allegory.Standard.Filter.Properties;
+using Allegory.Axiom.Filter.Properties;
 
-namespace Allegory.Standard.Filter.Concrete;
+namespace Allegory.Axiom.Filter.Concrete;
 
 public static partial class ConditionExtension
 {
@@ -81,39 +81,39 @@ public static partial class ConditionExtension
     private static void SetExpression(ref Expression expression, ParameterExpression parameterExpression,
         Condition condition)
     {
-        if (condition.Operator == Enums.Operator.Equals)
+        if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.Equals)
             expression = Expression.Equal(Expression.PropertyOrField(parameterExpression, condition.Column),
                 Expression.Constant(condition.Value,
                     Expression.PropertyOrField(parameterExpression, condition.Column).Type));
-        else if (condition.Operator == Enums.Operator.DoesntEquals)
+        else if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.DoesntEquals)
             expression = Expression.NotEqual(Expression.PropertyOrField(parameterExpression, condition.Column),
                 Expression.Constant(condition.Value,
                     Expression.PropertyOrField(parameterExpression, condition.Column).Type));
 
-        else if (condition.Operator == Enums.Operator.IsGreaterThan)
+        else if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.IsGreaterThan)
             SetComparableExpression(ref expression, parameterExpression, condition, ExpressionType.GreaterThan);
-        else if (condition.Operator == Enums.Operator.IsGreaterThanOrEqualto)
+        else if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.IsGreaterThanOrEqualto)
             SetComparableExpression(ref expression, parameterExpression, condition,
                 ExpressionType.GreaterThanOrEqual);
-        else if (condition.Operator == Enums.Operator.IsLessThan)
+        else if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.IsLessThan)
             SetComparableExpression(ref expression, parameterExpression, condition, ExpressionType.LessThan);
-        else if (condition.Operator == Enums.Operator.IsLessThanOrEqualto)
+        else if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.IsLessThanOrEqualto)
             SetComparableExpression(ref expression, parameterExpression, condition, ExpressionType.LessThanOrEqual);
 
-        else if (condition.Operator == Enums.Operator.IsBetween)
+        else if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.IsBetween)
             SetBetweenExpression(ref expression, parameterExpression, condition);
 
-        else if (condition.Operator == Enums.Operator.Contains)
+        else if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.Contains)
             SetStringExpression(ref expression, parameterExpression, condition, nameof(string.Contains));
-        else if (condition.Operator == Enums.Operator.StartsWith)
+        else if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.StartsWith)
             SetStringExpression(ref expression, parameterExpression, condition, nameof(string.StartsWith));
-        else if (condition.Operator == Enums.Operator.EndsWith)
+        else if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.EndsWith)
             SetStringExpression(ref expression, parameterExpression, condition, nameof(string.EndsWith));
 
-        else if (condition.Operator == Enums.Operator.IsNull)
+        else if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.IsNull)
             expression = Expression.Equal(Expression.PropertyOrField(parameterExpression, condition.Column),
                 Expression.Constant(null));
-        else if (condition.Operator == Enums.Operator.IsNullOrEmpty)
+        else if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.IsNullOrEmpty)
         {
             expression = Expression.Call(
                 typeof(string).GetMethod(nameof(string.IsNullOrEmpty), new Type[]
@@ -123,7 +123,7 @@ public static partial class ConditionExtension
                 Expression.PropertyOrField(parameterExpression, condition.Column));
         }
 
-        else if (condition.Operator == Enums.Operator.In)
+        else if (condition.Operator == Allegory.Axiom.Filter.Enums.Operator.In)
         {
             MemberExpression memberExpression = Expression.PropertyOrField(parameterExpression, condition.Column);
 
