@@ -8,7 +8,6 @@
         <Authors>Allegorysoft</Authors>
         <Version>0.1.0</Version>
         <PackageIcon>allegory-icon.png</PackageIcon>
-        <RootNamespace/>
     </PropertyGroup>
 
     <ItemGroup>
