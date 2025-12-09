@@ -6,7 +6,7 @@
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/allegorysoft/axiom</RepositoryUrl>
         <Authors>Allegorysoft</Authors>
-        <Version>0.1.0</Version>
+        <Version>0.1.1</Version>
         <PackageIcon>allegory-icon.png</PackageIcon>
     </PropertyGroup>
 
@@ -17,11 +17,11 @@
     <PropertyGroup>
 
         <!-- General .NET version -->
-        <DotnetVersion>net9.0</DotnetVersion>
+        <DotnetVersion>net10.0</DotnetVersion>
         <!-- General .NET Standard version -->
         <DotnetStandardVersion>netstandard2.1</DotnetStandardVersion>
         <!-- All Microsoft packages -->
-        <MicrosoftPackageVersion>9.0.0</MicrosoftPackageVersion>
+        <MicrosoftPackageVersion>10.0.0</MicrosoftPackageVersion>
 
         <IsTestProject Condition="$(MSBuildProjectFullPath.Contains('test')) and ($(MSBuildProjectName.EndsWith('.Tests')) or $(MSBuildProjectName.EndsWith('.TestBase')))">true</IsTestProject>
         <IsPackable Condition="'$(IsTestProject)' == 'true'">false</IsPackable>

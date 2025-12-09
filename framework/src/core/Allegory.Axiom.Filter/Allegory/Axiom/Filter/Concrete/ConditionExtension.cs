@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -272,9 +273,68 @@ public static partial class ConditionExtension
 
     private static object GetValue(object value, Type propertyType)
     {
-        return propertyType.IsEnum
-            ? Enum.Parse(propertyType, value.ToString())
-            : Convert.ChangeType(value, propertyType, CultureInfo.InvariantCulture);
+        if (value == null)
+            return propertyType.IsValueType ? Activator.CreateInstance(propertyType) : null;
+        
+        if (propertyType.IsAssignableFrom(value.GetType()))
+            return value;
+        
+        var converter = TypeDescriptor.GetConverter(propertyType);
+        if (converter.CanConvertFrom(value.GetType()))
+        {
+            return converter.ConvertFrom(value);
+        }
+
+        return propertyType.FullName switch
+        {
+            "System.DateOnly" => ConvertToDateOnly(value, propertyType),
+            "System.TimeOnly" => ConvertToTimeOnly(value, propertyType),
+            _ => Convert.ChangeType(value, propertyType, CultureInfo.InvariantCulture)
+        };
+    }
+    
+    private static object ConvertToDateOnly(object value, Type dateOnlyType)
+    {
+        DateTime dateTime;
+    
+        if (value is DateTime dt)
+        {
+            dateTime = dt;
+        }
+        else if (value is string str)
+        {
+            dateTime = DateTime.Parse(str, CultureInfo.InvariantCulture);
+        }
+        else
+        {
+            throw new InvalidCastException($"Cannot convert {value.GetType()} to DateOnly");
+        }
+    
+        return Activator.CreateInstance(dateOnlyType, dateTime.Year, dateTime.Month, dateTime.Day);
+    }
+
+    private static object ConvertToTimeOnly(object value, Type timeOnlyType)
+    {
+        DateTime dateTime;
+    
+        if (value is DateTime dt)
+        {
+            dateTime = dt;
+        }
+        else if (value is TimeSpan ts)
+        {
+            return Activator.CreateInstance(timeOnlyType, ts.Hours, ts.Minutes, ts.Seconds);
+        }
+        else if (value is string str)
+        {
+            dateTime = DateTime.Parse(str, CultureInfo.InvariantCulture);
+        }
+        else
+        {
+            throw new InvalidCastException($"Cannot convert {value.GetType()} to TimeOnly");
+        }
+    
+        return Activator.CreateInstance(timeOnlyType, dateTime.Hour, dateTime.Minute, dateTime.Second);
     }
 
     public static Condition Combine(

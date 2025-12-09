@@ -293,12 +293,14 @@ public class ConditionExpressionExtensionTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(FilterException))]
     public void ArgumentException()
     {
         var conditions = new Condition();
 
-        var expression = conditions.ToLambdaExpression<Sample>();
+        Assert.ThrowsExactly<FilterException>(() =>
+        {
+            conditions.ToLambdaExpression<Sample>();
+        });
     }
 
     [TestMethod]
