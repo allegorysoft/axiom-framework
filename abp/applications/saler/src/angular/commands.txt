@@ -1,2 +1,0 @@
-[Generate servie proxies]
-abp generate-proxy -t ng
