@@ -49,4 +49,9 @@ internal readonly struct ImplementationType(Type type)
 
         return typeName.EndsWith(serviceName, StringComparison.OrdinalIgnoreCase);
     }
+
+    public Type GetServiceType(Type serviceType)
+    {
+        return Type.IsGenericTypeDefinition ? serviceType.GetGenericTypeDefinition() : serviceType;
+    }
 }

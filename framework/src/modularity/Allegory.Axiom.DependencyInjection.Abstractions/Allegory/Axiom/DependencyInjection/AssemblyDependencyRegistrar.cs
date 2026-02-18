@@ -65,7 +65,7 @@ public class AssemblyDependencyRegistrar(IServiceCollection serviceCollection)
             {
                 RegisterService(
                     new ServiceDescriptor(
-                        serviceType,
+                        implementation.GetServiceType(serviceType),
                         implementation.Attribute?.ServiceKey,
                         implementation.Type,
                         implementation.GetLifetime()),
