@@ -22,12 +22,12 @@ public static class HostExtensions
             {
                 var configureMethod = assembly.GetTypes().SingleOrDefault(
                         t => typeof(IConfigureApplication).IsAssignableFrom(t) &&
-                             t is {IsInterface: false, IsAbstract: false})?
+                             t is {IsClass: true, IsAbstract: false})?
                     .GetMethod(nameof(IConfigureApplication.ConfigureAsync));
 
                 if (configureMethod != null)
                 {
-                    await (ValueTask) configureMethod!.Invoke(null, [builder])!;
+                    await (ValueTask) configureMethod.Invoke(null, [builder])!;
                 }
             }
 
@@ -35,12 +35,12 @@ public static class HostExtensions
             {
                 var configureMethod = assembly.GetTypes().SingleOrDefault(
                         t => typeof(IPostConfigureApplication).IsAssignableFrom(t) &&
-                             t is {IsInterface: false, IsAbstract: false})?
+                             t is {IsClass: true, IsAbstract: false})?
                     .GetMethod(nameof(IPostConfigureApplication.PostConfigureAsync));
 
                 if (configureMethod != null)
                 {
-                    await (ValueTask) configureMethod!.Invoke(null, [builder])!;
+                    await (ValueTask) configureMethod.Invoke(null, [builder])!;
                 }
             }
         }
@@ -58,12 +58,12 @@ public static class HostExtensions
             {
                 var configureMethod = assembly.GetTypes().SingleOrDefault(
                         t => typeof(IInitializeApplication).IsAssignableFrom(t) &&
-                             t is {IsInterface: false, IsAbstract: false})?
+                             t is {IsClass: true, IsAbstract: false})?
                     .GetMethod(nameof(IInitializeApplication.InitializeAsync));
 
                 if (configureMethod != null)
                 {
-                    await (ValueTask) configureMethod!.Invoke(null, [host])!;
+                    await (ValueTask) configureMethod.Invoke(null, [host])!;
                 }
             }
         }
