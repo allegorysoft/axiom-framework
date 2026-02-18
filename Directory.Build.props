@@ -4,14 +4,15 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/allegorysoft/axiom</RepositoryUrl>
+        <RepositoryUrl>https://github.com/allegorysoft/axiom-framework</RepositoryUrl>
         <Authors>Allegorysoft</Authors>
-        <Version>0.1.1</Version>
+        <Version>0.1.2</Version>
         <PackageIcon>allegory-icon.png</PackageIcon>
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="$(MSBuildThisFileDirectory)etc\miscellaneous\allegory-icon.png" Pack="true" Visible="false" PackagePath="\" />
+        <None Include="$(MSBuildThisFileDirectory)etc\miscellaneous\allegory-icon.png" Pack="true"
+              Visible="false" PackagePath="\"/>
     </ItemGroup>
 
     <PropertyGroup>
@@ -23,16 +24,16 @@
         <!-- All Microsoft packages -->
         <MicrosoftPackageVersion>10.0.0</MicrosoftPackageVersion>
 
-        <IsTestProject Condition="$(MSBuildProjectFullPath.Contains('test')) and ($(MSBuildProjectName.EndsWith('.Tests')) or $(MSBuildProjectName.EndsWith('.TestBase')))">true</IsTestProject>
+        <IsTestProject
+            Condition="$(MSBuildProjectFullPath.Contains('test')) and ($(MSBuildProjectName.EndsWith('.Tests')) or $(MSBuildProjectName.EndsWith('.TestBase')))">
+            true
+        </IsTestProject>
         <IsPackable Condition="'$(IsTestProject)' == 'true'">false</IsPackable>
 
     </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Condition="'$(IsTestProject)' == 'true'" Include="coverlet.collector">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
+    <ItemGroup Condition="'$(IsTestProject)' != 'true'">
+        <InternalsVisibleTo Include="$(MSBuildProjectName).Tests"/>
     </ItemGroup>
 
 </Project>

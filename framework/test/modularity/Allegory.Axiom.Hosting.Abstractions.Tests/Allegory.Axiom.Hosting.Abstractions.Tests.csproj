@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>$(DotnetVersion)</TargetFramework>
+        <RootNamespace/>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting"/>
+        <ProjectReference Include="..\..\..\src\modularity\Allegory.Axiom.Hosting.Abstractions\Allegory.Axiom.Hosting.Abstractions.csproj" />
+        <ProjectReference Include="..\..\core\Allegory.Axiom.TestBase\Allegory.Axiom.TestBase.csproj"/>
+        <ProjectReference Include="..\..\..\src\playground\Allegory.Axiom.Assembly3\Allegory.Axiom.Assembly3.csproj" />
+    </ItemGroup>
+
+</Project>
