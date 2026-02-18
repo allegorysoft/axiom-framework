@@ -35,12 +35,18 @@ internal readonly struct ImplementationType(Type type)
     public bool ShouldRegister(Type serviceType)
     {
         var serviceName = serviceType.Name.StartsWith('I') ? serviceType.Name[1..] : serviceType.Name;
+        var typeName = Type.Name;
 
         if (serviceType.IsGenericType)
         {
             serviceName = serviceName[..serviceName.IndexOf('`')];
         }
 
-        return Type.Name.EndsWith(serviceName, StringComparison.OrdinalIgnoreCase);
+        if (Type.IsGenericType)
+        {
+            typeName = typeName[..typeName.IndexOf('`')];
+        }
+
+        return typeName.EndsWith(serviceName, StringComparison.OrdinalIgnoreCase);
     }
 }
