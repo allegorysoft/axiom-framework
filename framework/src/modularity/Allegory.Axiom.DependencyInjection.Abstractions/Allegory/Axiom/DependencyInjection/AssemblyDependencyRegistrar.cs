@@ -52,7 +52,7 @@ public class AssemblyDependencyRegistrar(IServiceCollection serviceCollection)
             {
                 RegisterService(
                     new ServiceDescriptor(
-                        service.ServiceType,
+                        implementation.GetServiceType(service.ServiceType),
                         service.ServiceKey,
                         implementation.Type,
                         implementation.GetLifetime(service)),

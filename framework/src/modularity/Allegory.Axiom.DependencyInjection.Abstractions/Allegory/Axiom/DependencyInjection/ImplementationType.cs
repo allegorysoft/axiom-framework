@@ -52,6 +52,22 @@ internal readonly struct ImplementationType(Type type)
 
     public Type GetServiceType(Type serviceType)
     {
-        return Type.IsGenericTypeDefinition ? serviceType.GetGenericTypeDefinition() : serviceType;
+        if (Type.IsGenericTypeDefinition)
+        {
+            if (!serviceType.IsGenericType)
+            {
+                throw new InvalidOperationException($"'{serviceType}' is not a generic type.");
+            }
+
+            if (!Type.GetGenericArguments().SequenceEqual(serviceType.GetGenericArguments()))
+            {
+                throw new InvalidOperationException(
+                    $"The generic arguments of '{serviceType}' do not match the generic arguments of '{Type}'.");
+            }
+
+            return serviceType.GetGenericTypeDefinition();
+        }
+
+        return serviceType;
     }
 }
