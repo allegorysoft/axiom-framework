@@ -1,4 +1,6 @@
-﻿namespace Allegory.Axiom.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Allegory.Axiom.DependencyInjection;
 
 internal class TransientProductManager : ITransientService {}
 
@@ -31,3 +33,64 @@ internal interface IOrderRepository<T> : ITransientService {}
 internal class OrderRepository<T> : IOrderRepository<T> {}
 
 internal class OrderRepository : IOrderRepository<int> {}
+
+[Dependency(ServiceLifetime.Transient)]
+internal class AttributedTransientProductManager {}
+
+[Dependency(ServiceLifetime.Scoped)]
+internal class AttributedScopedProductManager {}
+
+[Dependency(ServiceLifetime.Singleton)]
+internal class AttributedSingletonProductManager {}
+
+internal class InheritedAttributedSingletonProductManager : AttributedSingletonProductManager {}
+
+[Dependency(ServiceLifetime.Transient)]
+internal class AttributedGenericProductManager<T> {}
+
+internal interface IAttributedTransientOrderManager {}
+
+internal interface IAttributedScopedOrderManager {}
+
+internal interface IAttributedSingletonOrderManager {}
+
+[Dependency(ServiceLifetime.Transient)]
+internal class AttributedTransientOrderManager : IAttributedTransientOrderManager {}
+
+[Dependency(ServiceLifetime.Scoped)]
+internal class AttributedScopedOrderManager : IAttributedScopedOrderManager {}
+
+[Dependency(ServiceLifetime.Singleton)]
+internal class ExtendedNameAttributedSingletonOrderManager : IAttributedSingletonOrderManager {}
+
+internal interface IAttributedOrderManager {}
+
+[Dependency(ServiceLifetime.Transient)]
+internal class AttributedOrderNameNotMatchedManager : IOrderManager {}
+
+internal interface IAttributedOrderRepository<T> {}
+
+[Dependency(ServiceLifetime.Transient)]
+internal class AttributedOrderRepository<T> : IAttributedOrderRepository<T> {}
+
+[Dependency(ServiceLifetime.Transient)]
+internal class AttributedOrderRepository : IAttributedOrderRepository<int> {}
+
+[Dependency(ServiceLifetime.Transient)]
+internal class OverriddenLifetimeProductManager : SingletonProductManager {}
+
+[Dependency(ServiceKey = 1)]
+internal class KeyedProductManager : ITransientService {}
+
+[Dependency(AutoRegister = false)]
+internal class SkipRegisterForThisClass : ITransientService {}
+
+[Dependency(ServiceLifetime.Transient, Strategy = RegistrationStrategy.TryAdd)]
+internal class TryAddAttributedTransientOrderManager : IAttributedTransientOrderManager{}
+
+internal interface ICustomerManager : ITransientService{}
+
+internal class CustomerManager : ICustomerManager{}
+
+[Dependency(Strategy =  RegistrationStrategy.Replace)]
+internal class ReplacedCustomerManager : ICustomerManager{}
