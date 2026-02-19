@@ -7,12 +7,9 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk"/>
-        <PackageReference Include="MSTest.TestAdapter"/>
-        <PackageReference Include="MSTest.TestFramework"/>
-    </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\..\..\src\core\Allegory.Axiom.Filter\Allegory.Axiom.Filter.csproj" />
+        <ProjectReference Include="..\Allegory.Axiom.TestBase\Allegory.Axiom.TestBase.csproj"/>
+        <ProjectReference Include="..\..\..\src\core\Allegory.Axiom.Filter\Allegory.Axiom.Filter.csproj"/>
     </ItemGroup>
 
 </Project>
