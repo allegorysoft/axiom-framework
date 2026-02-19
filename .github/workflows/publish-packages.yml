@@ -1,0 +1,60 @@
+name: "Publish Packages to NuGet"
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build
+        run: ./etc/scripts/build.ps1 -c Release
+        shell: pwsh
+
+      - name: Test
+        run: ./etc/scripts/test.ps1 -c Release
+        shell: pwsh
+
+      - name: Pack
+        run: ./etc/scripts/pack.ps1 -c Release
+        shell: pwsh
+
+      - name: Push
+        run: ./etc/scripts/push.ps1 -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
+        shell: pwsh
+
+      - name: Extract deployment version
+        shell: pwsh
+        run: |
+          $xml = [xml](Get-Content ./Directory.Build.props)
+          $version = $xml.Project.PropertyGroup.Version
+          echo "Version=$version" >> $env:GITHUB_ENV
+
+      - name: Creating GitHub Release and Tag 
+        uses: ncipollo/release-action@v1
+        with:
+          tag: 'v${{ env.Version }}'
+          commit: ${{ github.SHA }}
+          generateReleaseNotes: true
+          draft: false
+
+      - name: Patch version
+        run: ./etc/scripts/patch-version.ps1 -v ${{ env.Version }}
+        shell: pwsh
+
+      - name: Push new version to repository
+        run:  |
+          git config --global user.name 'allegorysoft-bot' 
+          git config --global user.email 'allegorysoft@gmail.com'
+          git add -A
+          git commit -m '[Deployed] - v${{ env.Version }}'
+          git pull --rebase --autostash
+          git push
