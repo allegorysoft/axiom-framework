@@ -18,7 +18,8 @@ internal readonly struct ImplementationType(Type type)
 
     public ServiceLifetime GetLifetime(IDependencyAttribute? attribute = null)
     {
-        return TryGetLifetime(attribute) ?? throw new NullReferenceException("Service lifetime cannot be null.");
+        return TryGetLifetime(attribute) ??
+               throw new InvalidOperationException($"Could not resolve service lifetime for '{Type}'.");
     }
 
     public ServiceLifetime? TryGetLifetime(IDependencyAttribute? attribute = null)
@@ -35,12 +36,39 @@ internal readonly struct ImplementationType(Type type)
     public bool ShouldRegister(Type serviceType)
     {
         var serviceName = serviceType.Name.StartsWith('I') ? serviceType.Name[1..] : serviceType.Name;
+        var typeName = Type.Name;
 
         if (serviceType.IsGenericType)
         {
             serviceName = serviceName[..serviceName.IndexOf('`')];
         }
 
-        return Type.Name.EndsWith(serviceName, StringComparison.OrdinalIgnoreCase);
+        if (Type.IsGenericType)
+        {
+            typeName = typeName[..typeName.IndexOf('`')];
+        }
+
+        return typeName.EndsWith(serviceName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    public Type GetServiceType(Type serviceType)
+    {
+        if (Type.IsGenericTypeDefinition)
+        {
+            if (!serviceType.IsGenericType)
+            {
+                throw new InvalidOperationException($"'{serviceType}' is not a generic type.");
+            }
+
+            if (!Type.GetGenericArguments().SequenceEqual(serviceType.GetGenericArguments()))
+            {
+                throw new InvalidOperationException(
+                    $"The generic arguments of '{serviceType}' do not match the generic arguments of '{Type}'.");
+            }
+
+            return serviceType.GetGenericTypeDefinition();
+        }
+
+        return serviceType;
     }
 }

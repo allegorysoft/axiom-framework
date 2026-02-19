@@ -2,92 +2,92 @@
 using Allegory.Axiom.Filter.Concrete;
 using Allegory.Axiom.Filter.Enums;
 using Allegory.Axiom.Filter.Tests.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
+using Xunit;
 
 namespace Allegory.Axiom.Filter.Tests;
 
-[TestClass]
 public class ConditionExpressionExtensionTests
 {
-    [TestMethod]
-    public void Equals()
+    [Fact]
+    public void IsEquals()
     {
         var conditions = new Condition("column1", Operator.Equals, "some value");
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column1 = "some value"
-        }));
+        }).ShouldBeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void DoesntEquals()
     {
         var conditions = new Condition("column2", Operator.DoesntEquals, 10);
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column2 = 15
-        }));
+        }).ShouldBeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void GreaterThan()
     {
         var conditions = new Condition("column2", Operator.IsGreaterThan, 10);
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column2 = 15
-        }));
+        }).ShouldBeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void GreaterThanOrEqual()
     {
         var conditions = new Condition("column2", Operator.IsGreaterThanOrEqualto, 10);
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column2 = 10
-        }));
+        }).ShouldBeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void LessThan()
     {
         var conditions = new Condition("column2", Operator.IsLessThan, 10);
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column2 = 5
-        }));
+        }).ShouldBeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void LessThanOrEqual()
     {
         var conditions = new Condition("column2", Operator.IsLessThanOrEqualto, 10);
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column2 = 10
-        }));
+        }).ShouldBeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void Between()
     {
         var conditions = new Condition("column2", Operator.IsBetween, new int[]
@@ -97,90 +97,90 @@ public class ConditionExpressionExtensionTests
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column2 = 12
-        }));
+        }).ShouldBeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void Contains()
     {
         var conditions = new Condition("column1", Operator.Contains, "thin");
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column1 = "something"
-        }));
-        Assert.IsFalse(expression.Invoke(new Sample
+        }).ShouldBeTrue();
+        expression.Invoke(new Sample
         {
             column1 = "emtpy"
-        }));
+        }).ShouldBeFalse();
     }
 
-    [TestMethod]
+    [Fact]
     public void StartsWith()
     {
         var conditions = new Condition("column1", Operator.StartsWith, "some");
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column1 = "something"
-        }));
-        Assert.IsFalse(expression.Invoke(new Sample
+        }).ShouldBeTrue();
+        expression.Invoke(new Sample
         {
             column1 = "emtpy"
-        }));
+        }).ShouldBeFalse();
     }
 
-    [TestMethod]
+    [Fact]
     public void EndsWith()
     {
         var conditions = new Condition("column1", Operator.EndsWith, "ing");
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column1 = "something"
-        }));
-        Assert.IsFalse(expression.Invoke(new Sample
+        }).ShouldBeTrue();
+        expression.Invoke(new Sample
         {
             column1 = "emtpy"
-        }));
+        }).ShouldBeFalse();
     }
 
-    [TestMethod]
+    [Fact]
     public void IsNull()
     {
         var conditions = new Condition("column1", Operator.IsNull);
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column1 = null
-        }));
+        }).ShouldBeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void IsNullOrEmpty()
     {
         var conditions = new Condition("column1", Operator.IsNullOrEmpty);
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column1 = string.Empty
-        }));
+        }).ShouldBeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void In()
     {
         var conditions = new Condition("column2", Operator.In, new List<int>
@@ -192,17 +192,17 @@ public class ConditionExpressionExtensionTests
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column2 = 12
-        }));
-        Assert.IsFalse(expression.Invoke(new Sample
+        }).ShouldBeTrue();
+        expression.Invoke(new Sample
         {
             column2 = 13
-        }));
+        }).ShouldBeFalse();
     }
 
-    [TestMethod]
+    [Fact]
     public void Group()
     {
         var conditions = new Condition
@@ -232,15 +232,15 @@ public class ConditionExpressionExtensionTests
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column1 = "some value",
             column2 = 25,
             column3 = 14
-        }));
+        }).ShouldBeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void GroupOr()
     {
         var conditions = new Condition
@@ -264,46 +264,46 @@ public class ConditionExpressionExtensionTests
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsFalse(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column1 = "some value",
             column2 = 3
-        }));
+        }).ShouldBeFalse();
 
         conditions.GroupOr = true;
         expression = conditions.ToLambdaExpression<Sample>();
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column1 = "some value",
             column2 = 3
-        }));
+        }).ShouldBeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void Not()
     {
         var conditions = new Condition("column3", Operator.Equals, 10, true);
 
         var expression = conditions.ToLambdaExpression<Sample>();
 
-        Assert.IsTrue(expression.Invoke(new Sample
+        expression.Invoke(new Sample
         {
             column2 = 12
-        }));
+        }).ShouldBeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void ArgumentException()
     {
         var conditions = new Condition();
 
-        Assert.ThrowsExactly<FilterException>(() =>
+        Assert.Throws<FilterException>(() =>
         {
             conditions.ToLambdaExpression<Sample>();
         });
     }
 
-    [TestMethod]
+    [Fact]
     public void ShouldRenameParameterNames()
     {
         var conditions = new Condition
@@ -350,10 +350,10 @@ public class ConditionExpressionExtensionTests
 
         var expression = conditions.GetFilterQuery<Sample>(out var parameters);
 
-        Assert.AreEqual(4, parameters.Count);
+        parameters.Count.ShouldBe(4);
         for (var i = 0; i < parameters.Count; i++)
         {
-            Assert.IsTrue(parameters.ContainsKey(Condition.ParameterPrefix + (i + 1)));
+            parameters.ContainsKey(Condition.ParameterPrefix + (i + 1)).ShouldBeTrue();
         }
     }
 }
