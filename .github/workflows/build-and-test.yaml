@@ -1,0 +1,42 @@
+name: Build and Test
+on:
+
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/ci.yml'
+      - 'framework/**'
+      - 'modules/**'
+      - 'Directory.*.props'
+
+  pull_request:
+    paths:
+      - '.github/workflows/ci.yml'
+      - 'framework/**'
+      - 'modules/**'
+      - 'Directory.*.props'
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.draft }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build
+        run: ./etc/scripts/build.ps1
+        shell: pwsh
+
+      - name: Test
+        run: ./etc/scripts/test.ps1
+        shell: pwsh
