@@ -9,7 +9,6 @@ on:
       - 'framework/**'
       - 'modules/**'
       - 'Directory.*.props'
-
   pull_request:
     paths:
       - '.github/workflows/ci.yml'
