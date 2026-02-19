@@ -79,18 +79,59 @@ internal class AttributedOrderRepository : IAttributedOrderRepository<int> {}
 [Dependency(ServiceLifetime.Transient)]
 internal class OverriddenLifetimeProductManager : SingletonProductManager {}
 
+internal interface IKeyedProductManager : ITransientService {}
+
 [Dependency(ServiceKey = 1)]
-internal class KeyedProductManager : ITransientService {}
+internal class KeyedProductManager : IKeyedProductManager {}
 
 [Dependency(AutoRegister = false)]
 internal class SkipRegisterForThisClass : ITransientService {}
 
 [Dependency(ServiceLifetime.Transient, Strategy = RegistrationStrategy.TryAdd)]
-internal class TryAddAttributedTransientOrderManager : IAttributedTransientOrderManager{}
+internal class TryAddAttributedTransientOrderManager : IAttributedTransientOrderManager {}
 
-internal interface ICustomerManager : ITransientService{}
+internal interface ICustomerManager : ITransientService {}
 
-internal class CustomerManager : ICustomerManager{}
+internal class CustomerManager : ICustomerManager {}
 
-[Dependency(Strategy =  RegistrationStrategy.Replace)]
-internal class ReplacedCustomerManager : ICustomerManager{}
+[Dependency(Strategy = RegistrationStrategy.Replace)]
+internal class ReplacedCustomerManager : ICustomerManager {}
+
+internal interface IFooManager : ITransientService {}
+
+[Dependency<IFooManager>]
+internal class GenericAttributedManager : IFooManager {}
+
+internal interface IZooManager {}
+
+internal interface IHooManager {}
+
+[Dependency<IZooManager>(ServiceLifetime.Transient)]
+[Dependency<IHooManager>(ServiceLifetime.Scoped)]
+internal class GenericAttributedManager2 : IZooManager, IHooManager, ISingletonService {}
+
+internal interface IGooManager {}
+
+[Dependency<IGooManager>(ServiceLifetime.Scoped)]
+internal class GenericAttributedManager3 : IGooManager {}
+
+internal interface IGenericAttributedKeyedService : ITransientService {}
+
+[Dependency<IGenericAttributedKeyedService>(ServiceKey = 1)]
+internal class GenericAttributedManager4 : IGenericAttributedKeyedService {}
+
+internal interface IGenericAttributeTryAddService : ITransientService {}
+
+[Dependency<IGenericAttributeTryAddService>]
+internal class GenericAttributedManager5 : IGenericAttributeTryAddService {}
+
+[Dependency<IGenericAttributeTryAddService>(Strategy = RegistrationStrategy.TryAdd)]
+internal class GenericAttributedManager6 : IGenericAttributeTryAddService {}
+
+internal interface IGenericAttributeReplaceService : ISingletonService {}
+
+[Dependency<IGenericAttributeReplaceService>]
+internal class GenericAttributedManager7 : IGenericAttributeReplaceService {}
+
+[Dependency<IGenericAttributeReplaceService>(Strategy = RegistrationStrategy.Replace)]
+internal class GenericAttributedManager8 : IGenericAttributeReplaceService {}

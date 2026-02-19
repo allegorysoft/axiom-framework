@@ -233,16 +233,25 @@ public class AssemblyDependencyRegistrarTests
     }
 
     [Fact]
-    public void RegisterClassKeyedViaDependencyAttribute()
+    public void RegisterKeyedServiceViaDependencyAttribute()
     {
         var service = Registrar.ServiceCollection.FirstOrDefault(
-            s => s.ServiceType == typeof(KeyedProductManager));
-
+            s => s.ServiceType == typeof(IKeyedProductManager));
         service.ShouldNotBeNull();
         service.ImplementationType.ShouldBeNull();
         service.IsKeyedService.ShouldBeTrue();
         service.ServiceKey.ShouldBe(1);
         service.KeyedImplementationType.ShouldBe(typeof(KeyedProductManager));
+        service.Lifetime.ShouldBe(ServiceLifetime.Transient);
+
+        var implementation = Registrar.ServiceCollection.FirstOrDefault(
+            s => s.ServiceType == typeof(KeyedProductManager));
+        implementation.ShouldNotBeNull();
+        implementation.ImplementationType.ShouldBeNull();
+        implementation.IsKeyedService.ShouldBeTrue();
+        implementation.ServiceKey.ShouldBe(1);
+        implementation.KeyedImplementationType.ShouldBe(typeof(KeyedProductManager));
+        implementation.Lifetime.ShouldBe(ServiceLifetime.Transient);
     }
 
     [Fact]
@@ -280,5 +289,101 @@ public class AssemblyDependencyRegistrarTests
         service.Lifetime.ShouldBe(ServiceLifetime.Transient);
     }
 
-    //generic attribute tests
+    [Fact]
+    public void RegisterInterfaceViaGenericDependencyAttribute()
+    {
+        var service = Registrar.ServiceCollection.FirstOrDefault(
+            s => s.ServiceType == typeof(IFooManager));
+        service.ShouldNotBeNull();
+        service.ImplementationType.ShouldBe(typeof(GenericAttributedManager));
+        service.Lifetime.ShouldBe(ServiceLifetime.Transient);
+
+        var implementation = Registrar.ServiceCollection.FirstOrDefault(
+            s => s.ServiceType == typeof(GenericAttributedManager));
+        implementation.ShouldNotBeNull();
+        implementation.ImplementationType.ShouldBe(typeof(GenericAttributedManager));
+        implementation.Lifetime.ShouldBe(ServiceLifetime.Transient);
+    }
+
+    [Fact]
+    public void RegisterInterfacesWithDifferentLifetimesViaGenericDependencyAttribute()
+    {
+        var zooService = Registrar.ServiceCollection.FirstOrDefault(
+            s => s.ServiceType == typeof(IZooManager));
+        zooService.ShouldNotBeNull();
+        zooService.ImplementationType.ShouldBe(typeof(GenericAttributedManager2));
+        zooService.Lifetime.ShouldBe(ServiceLifetime.Transient);
+
+        var hooService = Registrar.ServiceCollection.FirstOrDefault(
+            s => s.ServiceType == typeof(IHooManager));
+        hooService.ShouldNotBeNull();
+        hooService.ImplementationType.ShouldBe(typeof(GenericAttributedManager2));
+        hooService.Lifetime.ShouldBe(ServiceLifetime.Scoped);
+
+        var implementation = Registrar.ServiceCollection.FirstOrDefault(
+            s => s.ServiceType == typeof(GenericAttributedManager2));
+        implementation.ShouldNotBeNull();
+        implementation.ImplementationType.ShouldBe(typeof(GenericAttributedManager2));
+        implementation.Lifetime.ShouldBe(ServiceLifetime.Singleton);
+    }
+
+    [Fact]
+    public void RegisterInterfaceWhenDefaultLifetimeIsNullViaGenericDependencyAttribute()
+    {
+        var service = Registrar.ServiceCollection.FirstOrDefault(
+            s => s.ServiceType == typeof(IGooManager));
+        service.ShouldNotBeNull();
+        service.ImplementationType.ShouldBe(typeof(GenericAttributedManager3));
+        service.Lifetime.ShouldBe(ServiceLifetime.Scoped);
+
+        var implementation = Registrar.ServiceCollection.FirstOrDefault(
+            s => s.ServiceType == typeof(GenericAttributedManager3));
+        implementation.ShouldBeNull();
+    }
+
+    [Fact]
+    public void RegisterKeyedServiceViaGenericDependencyAttribute()
+    {
+        var service = Registrar.ServiceCollection.FirstOrDefault(
+            s => s.ServiceType == typeof(IGenericAttributedKeyedService));
+        service.ShouldNotBeNull();
+        service.ImplementationType.ShouldBeNull();
+        service.IsKeyedService.ShouldBeTrue();
+        service.ServiceKey.ShouldBe(1);
+        service.KeyedImplementationType.ShouldBe(typeof(GenericAttributedManager4));
+        service.Lifetime.ShouldBe(ServiceLifetime.Transient);
+
+        var implementation = Registrar.ServiceCollection.FirstOrDefault(
+            s => s.ServiceType == typeof(GenericAttributedManager4));
+        implementation.ShouldNotBeNull();
+        implementation.IsKeyedService.ShouldBeFalse();
+        implementation.ImplementationType.ShouldBe(typeof(GenericAttributedManager4));
+        implementation.Lifetime.ShouldBe(ServiceLifetime.Transient);
+    }
+
+    [Fact]
+    public void RegisterInterfaceOnceWhenTryAddViaGenericDependencyAttribute()
+    {
+        Registrar.ServiceCollection.Count(
+            s => s.ServiceType == typeof(IGenericAttributeTryAddService)).ShouldBe(1);
+
+        var service = Registrar.ServiceCollection.FirstOrDefault(
+            s => s.ServiceType == typeof(IGenericAttributeTryAddService));
+        service.ShouldNotBeNull();
+        service.ImplementationType.ShouldBe(typeof(GenericAttributedManager5));
+        service.Lifetime.ShouldBe(ServiceLifetime.Transient);
+    }
+
+    [Fact]
+    public void RegisterInterfaceReplacingExistingViaGenericDependencyAttribute()
+    {
+        Registrar.ServiceCollection.Count(
+            s => s.ServiceType == typeof(IGenericAttributeReplaceService)).ShouldBe(1);
+
+        var service = Registrar.ServiceCollection.FirstOrDefault(
+            s => s.ServiceType == typeof(IGenericAttributeReplaceService));
+        service.ShouldNotBeNull();
+        service.ImplementationType.ShouldBe(typeof(GenericAttributedManager8));
+        service.Lifetime.ShouldBe(ServiceLifetime.Singleton);
+    }
 }

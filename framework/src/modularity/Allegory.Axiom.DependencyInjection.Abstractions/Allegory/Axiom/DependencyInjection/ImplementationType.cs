@@ -18,7 +18,8 @@ internal readonly struct ImplementationType(Type type)
 
     public ServiceLifetime GetLifetime(IDependencyAttribute? attribute = null)
     {
-        return TryGetLifetime(attribute) ?? throw new NullReferenceException("Service lifetime cannot be null.");
+        return TryGetLifetime(attribute) ??
+               throw new InvalidOperationException($"Could not resolve service lifetime for '{Type}'.");
     }
 
     public ServiceLifetime? TryGetLifetime(IDependencyAttribute? attribute = null)
