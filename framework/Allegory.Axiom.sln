@@ -30,13 +30,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allegory.Axiom.DependencyInjection.Abstractions.Tests", "test\modularity\Allegory.Axiom.DependencyInjection.Abstractions.Tests\Allegory.Axiom.DependencyInjection.Abstractions.Tests.csproj", "{04DBE3B1-2943-4A92-8170-728835B49FC0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "playground", "playground", "{80FF4C63-4C20-46B7-BAA7-C61F6B3F69FC}"
-	ProjectSection(SolutionItems) = preProject
-		test\playground\Allegory.Axiom.Assembly3\Allegory.Axiom.Assembly3.csproj = test\playground\Allegory.Axiom.Assembly3\Allegory.Axiom.Assembly3.csproj
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allegory.Axiom.Assembly2", "test\playground\Allegory.Axiom.Assembly2\Allegory.Axiom.Assembly2.csproj", "{FBA959F6-6C95-406F-9DDE-2AC78E695127}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allegory.Axiom.Assembly1", "test\playground\Allegory.Axiom.Assembly1\Allegory.Axiom.Assembly1.csproj", "{F63D8358-7697-433E-9618-FB319D608F94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allegory.Axiom.Assembly3", "test\playground\Allegory.Axiom.Assembly3\Allegory.Axiom.Assembly3.csproj", "{9CF9A39D-58C6-4FA2-AB33-7D891FB39CBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,6 +79,10 @@ Global
 		{F63D8358-7697-433E-9618-FB319D608F94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F63D8358-7697-433E-9618-FB319D608F94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F63D8358-7697-433E-9618-FB319D608F94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CF9A39D-58C6-4FA2-AB33-7D891FB39CBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CF9A39D-58C6-4FA2-AB33-7D891FB39CBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CF9A39D-58C6-4FA2-AB33-7D891FB39CBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CF9A39D-58C6-4FA2-AB33-7D891FB39CBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +102,7 @@ Global
 		{80FF4C63-4C20-46B7-BAA7-C61F6B3F69FC} = {4C25890E-B62A-4F08-A6DB-7030B20E27DF}
 		{FBA959F6-6C95-406F-9DDE-2AC78E695127} = {80FF4C63-4C20-46B7-BAA7-C61F6B3F69FC}
 		{F63D8358-7697-433E-9618-FB319D608F94} = {80FF4C63-4C20-46B7-BAA7-C61F6B3F69FC}
+		{9CF9A39D-58C6-4FA2-AB33-7D891FB39CBA} = {80FF4C63-4C20-46B7-BAA7-C61F6B3F69FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C0D71235-D5C8-45BB-A444-834373A8E049}
