@@ -27,8 +27,11 @@ jobs:
         run: ./etc/scripts/pack.ps1 -c Release
         shell: pwsh
 
+      - name: Insecure nuget
+        run: dotnet nuget add source "http://46.225.170.206/v3/index.json" --name "baget" --allow-insecure-connections
+
       - name: Push
-        run: ./etc/scripts/push.ps1 -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
+        run: ./etc/scripts/push.ps1 -s http://46.225.170.206/v3/index.json
         shell: pwsh
 
       - name: Extract deployment version
