@@ -21,6 +21,7 @@ on:
       - synchronize
       - reopened
       - ready_for_review
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
