@@ -54,11 +54,19 @@ public sealed class HostApplication
         }
         else
         {
-            FillPackages(dependencyContext);
+            FillPackagesByDependencyContext(dependencyContext);
         }
     }
 
-    private void FillPackages(DependencyContext context)
+    private void FillPackagesByReferencedAssemblies()
+    {
+        foreach (var assembly in StartupAssembly.GetReferencedAssemblies())
+        {
+            _assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyName(assembly));
+        }
+    }
+
+    private void FillPackagesByDependencyContext(DependencyContext context)
     {
         var checkedLibraries = new Dictionary<string, bool>();
 
@@ -76,14 +84,6 @@ public sealed class HostApplication
         }
     }
 
-    private void FillPackagesByReferencedAssemblies()
-    {
-        foreach (var assembly in StartupAssembly.GetReferencedAssemblies())
-        {
-            _assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyName(assembly));
-        }
-    }
-
     private bool HasTransitiveDependency(
         DependencyContext context,
         RuntimeLibrary library,
@@ -95,8 +95,8 @@ public sealed class HostApplication
             return result;
         }
 
-        if (library.Dependencies.Any(d => d.Name == targetName) ||
-            library.Name == targetName)
+        // To include DependencyInjection.Abstractions, add " || library.Name == targetName" to the condition
+        if (library.Dependencies.Any(d => d.Name == targetName))
         {
             return checkedLibraries[library.Name] = true;
         }
