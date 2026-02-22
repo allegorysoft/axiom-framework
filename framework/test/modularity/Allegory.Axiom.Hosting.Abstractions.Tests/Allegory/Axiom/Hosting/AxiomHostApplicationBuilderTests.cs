@@ -17,8 +17,6 @@ public class AxiomHostApplicationBuilderTests
         var application = await applicationBuilder.BuildAsync(builder, assembly);
 
         application.StartupAssembly.ShouldBe(assembly);
-        application.Assemblies.Count.ShouldBeGreaterThan(0);
-
         application.Assemblies.ShouldContain(assembly);
         application.Assemblies.ShouldContain(typeof(Assembly1.Assembly1Package).Assembly);
         application.Assemblies.ShouldContain(typeof(Assembly2.Assembly2Package).Assembly);

@@ -31,6 +31,8 @@ public class AxiomHostApplicationBuilder : IAxiomHostApplicationBuilder
             packages.Add(AssemblyLoadContext.Default.LoadFromAssemblyName(assembly));
         }
 
+        packages.Add(startupAssembly);
+
         return packages;
     }
 
