@@ -9,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Allegory.Axiom.Hosting;
 
-public class AxiomHostApplicationBuilder : IAxiomHostApplicationBuilder
+public class AxiomHostApplicationBuilder
 {
     public virtual ValueTask<AxiomHostApplication> BuildAsync(
         IHostApplicationBuilder builder,

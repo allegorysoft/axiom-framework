@@ -53,7 +53,7 @@ public class HostExtensionsTests
         service.ShouldNotBeNull();
         service.GetNumber().ShouldBe(1);
     }
-    
+
     [Fact]
     public async ValueTask ShouldSetStartupAssembly()
     {
@@ -63,6 +63,7 @@ public class HostExtensionsTests
         var application = ServiceProviderExtensions.GetRequiredService<AxiomHostApplication>(host.Services);
 
         application.StartupAssembly.ShouldBe(typeof(Assembly2.Assembly2Package).Assembly);
+        application.Assemblies.ShouldContain(typeof(Assembly2.Assembly2Package).Assembly);
     }
 
     [Fact]
