@@ -24,15 +24,12 @@
         <!-- All Microsoft packages -->
         <MicrosoftPackageVersion>10.0.0</MicrosoftPackageVersion>
 
-        <IsTestProject
-            Condition="$(MSBuildProjectFullPath.Contains('test')) and ($(MSBuildProjectName.EndsWith('.Tests')) or $(MSBuildProjectName.EndsWith('.TestBase')))">
-            true
-        </IsTestProject>
+        <IsTestProject>$(MSBuildProjectDirectory.Replace('\', '/').Contains('/test/'))</IsTestProject>
         <IsPackable Condition="'$(IsTestProject)' == 'true'">false</IsPackable>
 
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(IsTestProject)' != 'true'">
+    <ItemGroup Condition="'$(IsTestProject)' == 'false'">
         <InternalsVisibleTo Include="$(MSBuildProjectName).Tests"/>
     </ItemGroup>
 
